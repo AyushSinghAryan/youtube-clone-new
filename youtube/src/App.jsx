@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import './App.css'
 import Navbar from './component/Navbar'
@@ -7,9 +7,19 @@ import { Route, Routes } from "react-router-dom"
 import Video from './pages/Video'
 import Profile from './pages/Profile'
 import VideoUpload from './pages/VideoUpload'
-import SignUp from './pages/SignUp'
+import SignUp from './pages/SignUp';
+import axios from 'axios'
 function App() {
   const [sideNavbar, setSideNavbar] = useState(true);
+
+  // useEffect(() => {
+  //   axios.get('http://localhost:3000/api/allVideo/').then(
+  //     res => { console.log(res) }
+  //   ).catch(err => {
+  //     console.log(err);
+
+  //   })
+  // }, [])
 
   const setSideNavBarFun = (value) => {
     setSideNavbar(value);
@@ -18,7 +28,7 @@ function App() {
     <>
       <Navbar setSideNavBarFun={setSideNavBarFun} sideNavbar={sideNavbar} />
       <Routes >
-        <Route path='/' element={<Home sideNavbar={sideNavbar} />} />
+        <Route path='/' element={<Home sideNavbar={sideNavbar} setSideNavbar={setSideNavBarFun} />} />
         <Route path='/watch/:id' element={<Video sideNavbar={sideNavbar} />} />
         <Route path='/user/:id' element={<Profile sideNavbar={sideNavbar} />} />
         <Route path='/:id/upload' element={<VideoUpload />} />

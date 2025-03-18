@@ -72,7 +72,7 @@ export const signIn = async (req, res) => {
             const token = jwt.sign({ userId: user._id }, "Its_My_Secret_Key");
             // now generated token will save in cookie 
             res.cookie('token', token, cookieOptions);
-            return res.json({ message: "Logged in successfully", success: "true", token });
+            return res.json({ message: "Logged in successfully", success: "true", token, user });
         } else {
             // For security, we return a generic error message
             return res.status(400).json({ error: "Invalid credentials" });

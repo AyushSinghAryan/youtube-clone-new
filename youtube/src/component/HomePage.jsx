@@ -1,5 +1,7 @@
-import VideoCard from "./VideoCard";
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+
 function HomePage({ sideNavbar }) {
     const categories = [
         "All",
@@ -13,40 +15,101 @@ function HomePage({ sideNavbar }) {
         "Education",
         "Tech",
     ];
+
+    const [data, setData] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState("All");
+
+    useEffect(() => {
+        axios.get('http://localhost:3000/api/allVideo/')
+            .then(res => {
+                setData(res.data.videos);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }, []);
+
+    // Filter videos based on selected category.
+    // When "All" is selected, show all videos.
+    const filteredVideos = selectedCategory === "All"
+        ? data
+        : data.filter(video => video.videoType === selectedCategory);
+
     return (
         <>
             <div>
-                <div>
-                    <div className="w-full overflow-x-auto scrollbar-hide">
-                        <div className="flex space-x-4 px-4 py-2 whitespace-nowrap">
-                            {categories.map((category, index) => (
-                                <button
-                                    key={index}
-                                    className="px-4 py-2 bg-gray-100  rounded-md text-sm font-medium hover:bg-black-300 hover:text-white dark:hover:bg-gray-600 transition"
-                                >
-                                    {category}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                    {/* video section */}
-                    <div
-                        className={`p-4  grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${sideNavbar ? 'lg:grid-cols-3' : 'lg:grid-cols-4'
-                            } gap-4`}
-                    >
-                        <Link to={"/watch/99"}> <VideoCard /></Link>
-                        <VideoCard />
-                        <VideoCard />
-                        <VideoCard />
-                        <VideoCard />
-                        <VideoCard />
-                        <VideoCard />
+                <div className="max-w-[100vw] overflow-x-auto scrollbar-hide">
+                    <div className="flex space-x-4 px-4 py-2 whitespace-nowrap min-w-max">
+                        {categories.map((category, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setSelectedCategory(category)}
+                                className={
+                                    selectedCategory === category
+                                        ? "px-4 py-1.5 bg-black text-white rounded-md"
+                                        : "px-4 py-1.5 bg-gray-100 text-black rounded-md"
+                                }
+                            >
+                                {category}
+                            </button>
+                        ))}
                     </div>
                 </div>
 
 
+
+                {/* Video section */}
+                <div className={`p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${sideNavbar ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-4`}>
+                    {filteredVideos.map(item => (
+                        <div key={item._id} className="w-full max-w-md rounded-lg overflow-hidden bg-white cursor-pointer">
+                            <Link to={`/watch/${item._id}`}>
+                                <div className="relative">
+                                    <img
+                                        className="w-full h-56 object-cover rounded-lg"
+                                        src={item.thumbnail}
+                                        alt="Video thumbnail"
+                                    />
+                                    <span className="absolute bottom-2 right-2 bg-black text-white text-xs px-1 rounded">
+                                        {"12:34"}
+                                    </span>
+                                </div>
+                            </Link>
+                            <div className="flex p-4">
+                                <Link to={`/user/${item?.user?._id}`} onClick={(e) => e.stopPropagation()}>
+                                    <img
+                                        className="w-10 h-10 rounded-full mr-3"
+                                        src={item?.user?.profilePic}
+                                        alt="User profile"
+                                    />
+                                </Link>
+                                <div className="flex flex-col flex-1">
+                                    <h3 className="text-sm font-semibold mb-1">{item.title}</h3>
+                                    <p className="text-xs text-gray-500">
+                                        {`${item?.user?.channelName} • 99k • timestamp`}
+                                    </p>
+                                </div>
+                                <div className="flex items-start">
+                                    <button
+                                        className="text-gray-500 hover:text-gray-700"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth="4"
+                                                d="M12 6v.01M12 12v.01M12 18v.01"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </>
-    )
+    );
 }
+
 export default HomePage;
