@@ -9,8 +9,9 @@ import Profile from './pages/Profile'
 import VideoUpload from './pages/VideoUpload'
 import SignUp from './pages/SignUp';
 import axios from 'axios'
+import UpdateVideo from './pages/UpdateVideo'
 function App() {
-  const [sideNavbar, setSideNavbar] = useState(true);
+  const [sideNavbar, setSideNavbar] = useState(false);
 
   // useEffect(() => {
   //   axios.get('http://localhost:3000/api/allVideo/').then(
@@ -30,9 +31,10 @@ function App() {
       <Routes >
         <Route path='/' element={<Home sideNavbar={sideNavbar} setSideNavbar={setSideNavBarFun} />} />
         <Route path='/watch/:id' element={<Video sideNavbar={sideNavbar} />} />
-        <Route path='/user/:id' element={<Profile sideNavbar={sideNavbar} />} />
+        <Route path='/user/:id' element={<Profile sideNavbar={sideNavbar} setSideNavbar={setSideNavBarFun} />} />
         <Route path='/:id/upload' element={<VideoUpload />} />
         <Route path='/signup' element={<SignUp />} />
+        <Route path='/:id/update' element={<UpdateVideo />} />
       </Routes>
 
     </>

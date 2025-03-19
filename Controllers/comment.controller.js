@@ -18,7 +18,7 @@ export const addComment = async (req, res) => {
 export const getCommentByVideoId = async (req, res) => {
     try {
         let { videoId } = req.params;
-        const comments = await commentModel.find({ video: videoId }).populate('user', 'channelName profilePic userName channelBanner email createdAt about');;
+        const comments = await commentModel.find({ video: videoId }).populate('user', 'channelName profilePic userName channelBanner email createdAt about').sort({ createdAt: -1 });;
 
         res.status(201).json({
             message: "Success",
@@ -76,7 +76,7 @@ export const deleteComment = async (req, res) => {
             return res.status(403).json({ error: "Unauthorized: You can only delete your own comment" });
         }
 
-        await comment.remove();
+        await comment.deleteOne();
 
         res.status(200).json({
             message: "Comment deleted successfully"

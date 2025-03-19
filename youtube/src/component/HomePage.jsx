@@ -10,7 +10,7 @@ function HomePage({ sideNavbar }) {
         "News",
         "Movies",
         "Live",
-        "Trending",
+        "Cartoon",
         "Podcasts",
         "Education",
         "Tech",
@@ -28,6 +28,14 @@ function HomePage({ sideNavbar }) {
                 console.log(err);
             });
     }, []);
+
+    const getRelativeTime = (dateString) => {
+        const createdDate = new Date(dateString);
+        const currentDate = new Date();
+        const diffTime = currentDate - createdDate;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays === 0 ? "Today" : `${diffDays} days ago`;
+    };
 
     // Filter videos based on selected category.
     // When "All" is selected, show all videos.
@@ -85,7 +93,7 @@ function HomePage({ sideNavbar }) {
                                 <div className="flex flex-col flex-1">
                                     <h3 className="text-sm font-semibold mb-1">{item.title}</h3>
                                     <p className="text-xs text-gray-500">
-                                        {`${item?.user?.channelName} • 99k • timestamp`}
+                                        {`${item?.user?.channelName} • 99k • ${getRelativeTime(item?.createdAt)}`}
                                     </p>
                                 </div>
                                 <div className="flex items-start">
