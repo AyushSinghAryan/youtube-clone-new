@@ -5,8 +5,8 @@ import { RiVideoAddLine } from "react-icons/ri";
 import { AiOutlineBell } from "react-icons/ai";
 import { BiPlus } from "react-icons/bi";
 import { PiSignOut, PiDotsThreeVertical, PiUserCircle } from "react-icons/pi";
-import logo from "../../public/youtubeLogo.png";
-import profile from "../../public/userProfile.jpg";
+import logo from "../../src/assets/youtubeLogo.png";
+import profile from "../assets/userProfile.jpg";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Login from "./Login";
@@ -17,6 +17,8 @@ function Navbar({ setSideNavBarFun, sideNavbar }) {
     const [navbarModel, setNavbarModel] = useState(false);
     const [login, setLogin] = useState(false);
     const [isLogedIn, setIsLogedIn] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+
 
     // NEW STATE for controlling mobile search overlay
     const [showMobileSearch, setShowMobileSearch] = useState(false);
@@ -76,6 +78,11 @@ function Navbar({ setSideNavBarFun, sideNavbar }) {
         }
     }, []);
 
+    const handleSearch = () => {
+        // Navigate to HomePage and include the search query as a URL parameter
+        navigate(`/?q=${encodeURIComponent(searchQuery)}`);
+        setSearchQuery("");
+    };
     return (
         <>
             {/* Fixed Navbar */}
@@ -95,10 +102,15 @@ function Navbar({ setSideNavBarFun, sideNavbar }) {
                             <input
                                 type="text"
                                 placeholder="Search"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") handleSearch();
+                                }}
                                 className="w-full outline-none"
                             />
                         </div>
-                        <button className="px-4 py-2 border border-gray-400 bg-gray-100 rounded-r-full">
+                        <button className="px-4 py-2 border border-gray-400 bg-gray-100 rounded-r-full" onClick={handleSearch}>
                             <CiSearch size="24px" />
                         </button>
                         <IoMdMic
@@ -205,10 +217,20 @@ function Navbar({ setSideNavBarFun, sideNavbar }) {
                             <input
                                 type="text"
                                 placeholder="Search"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                        handleSearch();
+                                        setShowMobileSearch(false);
+                                    }
+                                }}
                                 className="w-full outline-none"
                             />
+
                         </div>
-                        <button className="px-4 py-2 border border-gray-400 bg-gray-100 rounded-r-full">
+                        <button className="px-4 py-2 border border-gray-400 bg-gray-100 rounded-r-full" onClick={() => { handleSearch(); setShowMobileSearch(false); }}
+                        >
                             <CiSearch size="24px" />
                         </button>
                         <IoMdMic

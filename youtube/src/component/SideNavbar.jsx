@@ -26,7 +26,7 @@ import { CgPlayList } from "react-icons/cg";
 import { HiOutlineMusicalNote } from "react-icons/hi2";
 import { PiGraduationCap } from "react-icons/pi";
 import { SiYoutubegaming } from "react-icons/si";
-import profile from "../../public/userProfile.jpg";
+import profile from "../../src/assets/userProfile.jpg";
 
 import { FaFire } from "react-icons/fa6";
 

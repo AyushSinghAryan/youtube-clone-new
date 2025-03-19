@@ -10,8 +10,8 @@ import { CgMediaLive, CgPlayList } from "react-icons/cg";
 import { TfiCup } from "react-icons/tfi";
 import { GoVideo } from "react-icons/go";
 import { Link } from "react-router-dom";
-import logo from "../../public/youtubeLogo.png"; // Your YouTube logo
-import profile from "../../public/userProfile.jpg";
+import logo from "../../src/assets/youtubeLogo.png"; // Your YouTube logo
+import profile from "../../src/assets/userProfile.jpg";
 
 function ModalSidebar({ sideNavbar, setSideNavbar }) {
     const closeModal = () => setSideNavbar(false);
