@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import axios from "axios";
 
 function HomePage({ sideNavbar }) {
+    //here showing list of categories 
     const categories = [
         "All",
         "Music",
@@ -15,14 +16,15 @@ function HomePage({ sideNavbar }) {
         "Education",
         "Tech",
     ];
-
+    // storing the video data from the api
     const [data, setData] = useState([]);
+    // by default all category is selected
     const [selectedCategory, setSelectedCategory] = useState("All");
 
     // Get the search query from the URL
     const [searchParams] = useSearchParams();
     const query = searchParams.get("q") || "";
-
+    // getting all video and display on the screen 
     useEffect(() => {
         axios.get('http://localhost:3000/api/allVideo/')
             .then(res => {
@@ -32,7 +34,7 @@ function HomePage({ sideNavbar }) {
                 console.log(err);
             });
     }, []);
-
+    // use to calculate for how many days ago user has uploaded the video , using createdAt
     const getRelativeTime = (dateString) => {
         const createdDate = new Date(dateString);
         const currentDate = new Date();

@@ -13,42 +13,52 @@ import Login from "./Login";
 import axios from "axios";
 
 function Navbar({ setSideNavBarFun, sideNavbar }) {
+    // Default user picture from local assets
     const [userPic, setUserPic] = useState(profile);
+    // Toggle state for displaying the dropdown menu (user options)
     const [navbarModel, setNavbarModel] = useState(false);
+    // Toggle state to show the Login component modal
     const [login, setLogin] = useState(false);
+    // Track if a user is logged in by checking local storage
     const [isLogedIn, setIsLogedIn] = useState(false);
+    // Holds the current value of the search input field for filtering videos
     const [searchQuery, setSearchQuery] = useState("");
-
-
-    // NEW STATE for controlling mobile search overlay
+    // Controls the display of the mobile search overlay
     const [showMobileSearch, setShowMobileSearch] = useState(false);
 
     const navigate = useNavigate();
 
+    // Toggle the dropdown menu visibility for user options
     const handleClickModel = () => {
         setNavbarModel((prev) => !prev);
     };
 
+    // Toggle the side navigation bar's visibility
     const sideNavBarFun = () => {
         setSideNavBarFun(!sideNavbar);
     };
 
+    // Navigate to the user profile page and close the dropdown menu
     const handleProfile = () => {
         let id = localStorage.getItem("userId");
         navigate(`/user/${id}`);
         setNavbarModel(false);
     };
 
+    // Closes the login modal
     const setLoginModel = () => {
         setLogin(false);
     };
 
+
+    // Handle the click action from popup options.If "login" is clicked, shows the login modal.Otherwise, clears user data and logs out.
     function onClickOfPopUpOption(button) {
         setNavbarModel(false);
 
         if (button === "login") {
             setLogin(true);
         } else {
+            // For logout, clear local storage and call logout API
             localStorage.clear();
             getLogoutFun();
             setTimeout(() => {
@@ -58,18 +68,21 @@ function Navbar({ setSideNavBarFun, sideNavbar }) {
         }
     }
 
+
+    // Calls the logout API endpoint to log the user out.
+
     const getLogoutFun = async () => {
-        // POST to logout endpoint
         axios
             .post("http://localhost:3000/auth/logout", {}, { withCredentials: true })
             .then(() => {
-                console.log("Logout");
+                console.log("Logout successful");
             })
             .catch((error) => {
-                console.log(error);
+                console.log("Error during logout:", error);
             });
     };
 
+    // On component mount, set the logged-in state and update the user profile picture from local storage (if exists)
     useEffect(() => {
         let userProfilePic = localStorage.getItem("userProfilePic");
         setIsLogedIn(localStorage.getItem("userId") !== null);
@@ -78,17 +91,20 @@ function Navbar({ setSideNavBarFun, sideNavbar }) {
         }
     }, []);
 
+
+
+    // Handles search functionality. Navigates to the homepage with the search query as a URL parameter.
     const handleSearch = () => {
-        // Navigate to HomePage and include the search query as a URL parameter
         navigate(`/?q=${encodeURIComponent(searchQuery)}`);
         setSearchQuery("");
     };
+
     return (
         <>
-            {/* Fixed Navbar */}
+            {/* Fixed Navbar at the top */}
             <nav className="fixed top-0 w-full bg-white px-6 py-2 z-50 h-[60px]">
                 <div className="flex justify-between items-center h-full">
-                    {/* Left Section: Menu & Logo */}
+                    {/* Left Section: Menu icon and Logo */}
                     <div className="flex items-center space-x-4">
                         <AiOutlineMenu className="text-xl cursor-pointer" onClick={sideNavBarFun} />
                         <Link to={"/"}>
@@ -119,7 +135,7 @@ function Navbar({ setSideNavBarFun, sideNavbar }) {
                         />
                     </div>
 
-                    {/* Small Screen: Search Icon (shown only on mobile) */}
+                    {/* Mobile: Search Icon (visible only on small screens) */}
                     <div className="block sm:hidden">
                         <CiSearch
                             size="24px"
@@ -128,9 +144,9 @@ function Navbar({ setSideNavBarFun, sideNavbar }) {
                         />
                     </div>
 
-                    {/* Right Section: Conditionally Rendered */}
+                    {/* Right Section: User actions (logged in vs logged out) */}
                     {isLogedIn ? (
-                        // When user is logged in
+                        // When the user is logged in
                         <div className="flex items-center space-x-5">
                             <Link to={"/4545/upload"}>
                                 <button
@@ -154,12 +170,11 @@ function Navbar({ setSideNavBarFun, sideNavbar }) {
                             </div>
                         </div>
                     ) : (
-                        // When user is logged out
+                        // When the user is logged out
                         <div className="flex items-center space-x-2">
-                            {/* Three-dot menu */}
+                            {/* Three-dot menu icon for additional options */}
                             <PiDotsThreeVertical className="text-gray-600 text-xl cursor-pointer" />
-
-                            {/* Sign in button */}
+                            {/* Sign in button to open login modal */}
                             <button
                                 className="flex items-center space-x-2 border border-gray-300 rounded-full px-4 py-2 hover:bg-gray-100 transition"
                                 onClick={() => onClickOfPopUpOption("login")}
@@ -169,11 +184,12 @@ function Navbar({ setSideNavBarFun, sideNavbar }) {
                             </button>
                         </div>
                     )}
+                    {/* Conditionally render Login modal */}
                     {login && <Login setLoginModel={setLoginModel} />}
                 </div>
             </nav>
 
-            {/* Dropdown Modal Positioned below the navbar */}
+            {/* Dropdown Modal Positioned below the navbar for user options */}
             {navbarModel && (
                 <div className="fixed top-[60px] right-6 w-48 bg-white text-black shadow-lg rounded z-40">
                     {isLogedIn && (
@@ -203,10 +219,10 @@ function Navbar({ setSideNavBarFun, sideNavbar }) {
                 </div>
             )}
 
-            {/* MOBILE SEARCH OVERLAY */}
+            {/* Mobile Search Overlay */}
             {showMobileSearch && (
                 <div className="fixed top-0 left-0 w-full h-full bg-white z-50 flex flex-col">
-                    {/* Top Bar with back arrow and the search input */}
+                    {/* Top Bar with back arrow and search input */}
                     <div className="flex items-center px-2 py-2 border-b border-gray-300">
                         <AiOutlineArrowLeft
                             size="24px"
@@ -227,9 +243,10 @@ function Navbar({ setSideNavBarFun, sideNavbar }) {
                                 }}
                                 className="w-full outline-none"
                             />
-
                         </div>
-                        <button className="px-4 py-2 border border-gray-400 bg-gray-100 rounded-r-full" onClick={() => { handleSearch(); setShowMobileSearch(false); }}
+                        <button
+                            className="px-4 py-2 border border-gray-400 bg-gray-100 rounded-r-full"
+                            onClick={() => { handleSearch(); setShowMobileSearch(false); }}
                         >
                             <CiSearch size="24px" />
                         </button>
@@ -238,7 +255,7 @@ function Navbar({ setSideNavBarFun, sideNavbar }) {
                             className="ml-3 bg-gray-100 rounded-full p-2 cursor-pointer hover:bg-gray-200 duration-200"
                         />
                     </div>
-                    {/* If you need the rest of the screen blank, keep it empty or add other elements below */}
+                    {/* Additional elements for mobile view can be added here if needed */}
                 </div>
             )}
         </>

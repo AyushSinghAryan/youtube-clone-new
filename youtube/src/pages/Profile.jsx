@@ -11,9 +11,9 @@ const Profile = ({ sideNavbar, setSideNavbar }) => {
     const [user, setUser] = useState(null);
     const [activeDropdown, setActiveDropdown] = useState(null);
     const navigate = useNavigate();
-    // Assume that your authenticated user's ID is stored in localStorage
+    //   our authenticated user's ID is stored in localStorage
     const loggedUserId = localStorage.getItem("userId");
-
+    // getting user profile from the videos 
     const fetchProfileData = async () => {
         try {
             const response = await axios.get(`http://localhost:3000/api/${id}/channel`);
@@ -23,6 +23,7 @@ const Profile = ({ sideNavbar, setSideNavbar }) => {
             console.error(error);
         }
     };
+
 
     useEffect(() => {
         fetchProfileData();
@@ -35,6 +36,7 @@ const Profile = ({ sideNavbar, setSideNavbar }) => {
 
     // Delete video and update UI
     const handleDelete = async (videoId) => {
+        // asking prompt for video deletion 
         const confirmDelete = window.confirm("Are you sure you want to delete this video?");
         if (!confirmDelete) return;
         try {
@@ -44,6 +46,15 @@ const Profile = ({ sideNavbar, setSideNavbar }) => {
         } catch (error) {
             console.error("Error deleting video:", error);
         }
+    };
+
+    // use to calculate for how many days ago user has uploaded the video , using createdAt
+    const getRelativeTime = (dateString) => {
+        const createdDate = new Date(dateString);
+        const currentDate = new Date();
+        const diffTime = currentDate - createdDate;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays === 0 ? "Today" : `${diffDays} days ago`;
     };
 
     return (
@@ -105,16 +116,16 @@ const Profile = ({ sideNavbar, setSideNavbar }) => {
                                                 {video.title}
                                             </h3>
                                             <p className="text-[10px] sm:text-xs md:text-sm text-gray-500 mt-1">
-                                                {"10k"} views • {video.createdAt.slice(0, 10)}
+                                                {"99k"} views • {getRelativeTime(video.createdAt.slice(0, 10))}
                                             </p>
                                         </div>
                                     </div>
                                 </Link>
                                 {/* Show dropdown only if the logged in user is the owner */}
                                 {video.user._id === loggedUserId && (
-                                    <div className="absolute top-2 right-2">
+                                    <div className="absolute top-2 right-2 ">
                                         <PiDotsThreeOutlineVerticalFill
-                                            className="cursor-pointer"
+                                            className="cursor-pointer bg-white"
                                             onClick={() =>
                                                 setActiveDropdown(activeDropdown === video._id ? null : video._id)
                                             }

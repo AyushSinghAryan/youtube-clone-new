@@ -7,6 +7,7 @@ import { toast, ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const VideoUpload = () => {
+    // these are videoUpload input fields initally empty we take as an object
     const [inputField, setInputField] = useState({
         title: "",
         description: "",
@@ -14,19 +15,23 @@ const VideoUpload = () => {
         thumbnail: "",
         videoType: ""
     });
-    const [loader, setLoader] = useState(false);
-    const navigate = useNavigate();
 
+    const [loader, setLoader] = useState(false);
+    // useNavigate use for routing 
+    const navigate = useNavigate();
+    // handleOnChangeInput takes event and name , name like input field
     const handleOnChangeInput = (event, name) => {
+        // here we setting the value inside the input field
         setInputField({
             ...inputField,
             [name]: event.target.value
         });
     };
-
+    // uploadImage use for image , video upload on the cloudinary 
     const uploadImage = async (e, type) => {
         setLoader(true);
         console.log("Uploading");
+
         const files = e.target.files;
         const data = new FormData();
         data.append('file', files[0]);
@@ -46,14 +51,14 @@ const VideoUpload = () => {
             console.log(error);
         }
     };
-
+    // useEffect for getting user id from local storage if user id null navigate user to homepage 
     useEffect(() => {
         let isLogin = localStorage.getItem("userId");
         if (isLogin === null) {
             navigate("/");
         }
     }, [navigate]);
-
+    // use for form validations
     const handleSubmitFunction = async () => {
         // Validate that all fields are filled before uploading
         if (

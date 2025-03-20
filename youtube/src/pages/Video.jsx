@@ -7,25 +7,37 @@ import axios from 'axios';
 import { toast, ToastContainer, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import ModalSidebar from '../component/ModalSideNavbar';
 
-function Video({ sideNavbar }) {
+function Video({ sideNavbar, setSideNavbar }) {
+    // State to store the user's comment input
     const [comment, setComment] = useState("");
+    // State to control the display of comment action buttons (e.g., Comment and Cancel)
     const [showButtons, setShowButtons] = useState(false);
+    // State for storing the video URL generated from Cloudinary to be used in the video tag
     const [videoUrl, setVideoURL] = useState("");
+    // State for storing video data fetched from the API
     const [data, setData] = useState(null);
+    // State for storing comments to be displayed
     const [comments, setComments] = useState([]);
+    // State for storing the user's profile picture; uses a default image if the user is not logged in
     const [userPic, setUserPic] = useState(
         "https://img.freepik.com/premium-vector/user-profile-icon-flat-style-member-avatar-vector-illustration-isolated-background-human-permission-sign-business-concept_157943-15752.jpg?semt=ais_hybrid"
     );
+    // State for tracking which comment's options menu (edit/delete) is open for authenticated users
     const [openCommentMenuId, setOpenCommentMenuId] = useState(null);
+    // State for storing the ID of the comment being edited
     const [editingCommentId, setEditingCommentId] = useState(null);
+    // State for storing the updated message of the comment being edited
     const [editingCommentMessage, setEditingCommentMessage] = useState("");
+    // State for storing the logged-in user's ID
     const [loggedInUserId, setLoggedInUserId] = useState(null);
+    // State for storing suggested videos to be shown in the sidebar
     const [suggestions, setSuggestions] = useState([]);
 
     const { id } = useParams();
 
-    // Fetch the current video data
+    // Fetch the current video data by its ID
     const fetchVideoById = async () => {
         try {
             const response = await axios.get(`http://localhost:3000/api/getVideoById/${id}`);
@@ -36,7 +48,7 @@ function Video({ sideNavbar }) {
         }
     };
 
-    // Fetch comments
+    // Fetch comments associated with the current video and sort them by creation date (newest first)
     const getCommentByVideoId = async () => {
         try {
             const response = await axios.get(`http://localhost:3000/commentApi/comment/${id}`);
@@ -67,15 +79,18 @@ function Video({ sideNavbar }) {
         fetchSuggestions();
     }, [id]);
 
+    // Update the comment state as the user types
     const handleCommentChange = (e) => {
         setComment(e.target.value);
     };
 
+    // Clear the comment input and hide action buttons when cancel is pressed
     const handleCancel = () => {
         setComment("");
         setShowButtons(false);
     };
 
+    // Submit the comment to the API and update the comment list
     const handleComment = async () => {
         const body = {
             video: id,
@@ -106,6 +121,7 @@ function Video({ sideNavbar }) {
         }
     };
 
+    // Fetch authenticated user's profile picture and ID from localStorage
     useEffect(() => {
         const userProfilePic = localStorage.getItem("userProfilePic");
         if (userProfilePic !== null) {
@@ -117,6 +133,7 @@ function Video({ sideNavbar }) {
         }
     }, []);
 
+    // Toggle the comment options menu (edit/delete) for a specific comment
     const toggleMenu = (commentId) => {
         if (openCommentMenuId === commentId) {
             setOpenCommentMenuId(null);
@@ -125,12 +142,14 @@ function Video({ sideNavbar }) {
         }
     };
 
+    // Initiate editing mode for a comment; only the authenticated user's comment can be edited
     const handleEditComment = (commentItem) => {
         setEditingCommentId(commentItem._id);
         setEditingCommentMessage(commentItem.message);
         setOpenCommentMenuId(null);
     };
 
+    // Save the updated comment by sending a PUT request to the API
     const handleSaveComment = async (commentId) => {
         try {
             await axios.put(
@@ -160,6 +179,7 @@ function Video({ sideNavbar }) {
         }
     };
 
+    // Delete a comment and update the comment list
     const handleDeleteComment = async (commentId) => {
         try {
             await axios.delete(
@@ -182,6 +202,7 @@ function Video({ sideNavbar }) {
         }
     };
 
+    // Calculate and return the relative time (e.g., "Today" or "2 days ago") based on the comment's creation date
     const getRelativeTime = (dateString) => {
         const createdDate = new Date(dateString);
         const currentDate = new Date();
@@ -192,14 +213,16 @@ function Video({ sideNavbar }) {
 
     const videoRef = useRef(null);
 
+    // Reload the video element when the video URL changes (e.g., when a different suggested video is selected)
     useEffect(() => {
         if (videoRef.current) {
-            videoRef.current.load(); // This reloads the video when videoUrl changes.
+            videoRef.current.load();
         }
     }, [videoUrl]);
 
     return (
         <div className="pt-[60px] box-border p-4">
+            <ModalSidebar sideNavbar={sideNavbar} setSideNavbar={setSideNavbar} />
             <div className="flex flex-col md:flex-row">
                 <div className="md:w-2/3">
                     <div className="w-full">
@@ -236,12 +259,12 @@ function Video({ sideNavbar }) {
                             <div className="flex items-center gap-4">
                                 <div className="inline-flex items-center rounded-full bg-gray-200 text-gray-600 px-4 py-2">
                                     <button className="flex items-center space-x-1 hover:text-gray-800 focus:outline-none">
-                                        <BiLike className="w-5 h-5" />
+                                        <BiLike className="w-5 h-5 cursor-pointer" />
                                         <span className="text-sm font-medium">{data?.like}</span>
                                     </button>
-                                    <div className="mx-2 h-5 w-px bg-gray-300" />
-                                    <button className="flex items-center hover:text-gray-800 focus:outline-none">
-                                        <BiDislike className="w-5 h-5" />
+                                    <div className="mx-2 h-5 w-px bg-gray-300 " />
+                                    <button className="flex items-center hover:text-gray-800  focus:outline-none">
+                                        <BiDislike className="w-5 h-5 cursor-pointer" />
                                     </button>
                                 </div>
                                 <button className="flex items-center space-x-1 text-gray-600 hover:text-gray-800 bg-gray-200 px-3 py-2 rounded-3xl">
@@ -310,7 +333,7 @@ function Video({ sideNavbar }) {
                                     <div className="flex-1">
                                         <div className="flex items-center justify-between">
                                             <p className="font-semibold text-sm">
-                                                {item?.user?.channelName} <span className='font-light text-xs'>{getRelativeTime(item?.createdAt)}</span>
+                                                @{item?.user?.userName} <span className='font-light text-xs'>{getRelativeTime(item?.createdAt)}</span>
                                             </p>
                                             {loggedInUserId === item?.user?._id && (
                                                 <div className="relative inline-block text-left">
@@ -376,7 +399,7 @@ function Video({ sideNavbar }) {
                     </div>
                 </div>
 
-                {/* Suggestions Sidebar */}
+                {/* SUGGESTIONS SIDEBAR */}
                 <div className="md:w-1/3 md:ml-4 mt-6 md:mt-0">
                     <h2 className="text-lg font-semibold mb-4">Up Next</h2>
                     <div className="space-y-4">
@@ -393,7 +416,7 @@ function Video({ sideNavbar }) {
                                     <p className="text-sm font-semibold">{video.title}</p>
                                     <p className="text-xs text-gray-500">{video?.user?.channelName}</p>
                                     <p className="text-xs text-gray-500">
-                                        {video.views} views • {getRelativeTime(video.createdAt)}
+                                        {"99k"} views • {getRelativeTime(video.createdAt)}
                                     </p>
                                 </div>
                             </div>

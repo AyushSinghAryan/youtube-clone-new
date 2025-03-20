@@ -10,7 +10,9 @@ app.use(cors({
     origin: 'http://localhost:5173', //react app url
     credentials: true
 }))
+// use for parse body req
 app.use(express.json());
+// use for  parse and extract cookie data from HTTP requests
 app.use(cookieParser());
 const PORT = 3000;
 
@@ -18,7 +20,7 @@ const PORT = 3000;
 app.use("/auth", AuthRoutes);
 app.use("/api", VideoRoutes);
 app.use("/commentApi", CommetRoutes);
-
+// listen to the port 
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`)
 })

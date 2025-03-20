@@ -53,9 +53,15 @@ function ModalSidebar({ sideNavbar, setSideNavbar }) {
         { id: 4, name: "Youtube Kids", icon: <SiYoutubekids /> },
     ];
 
+    // Check if the current route is the video screen
+    const isVideoScreen = location.pathname.includes("/watch");
+
+    // Only hide on large screens if not on the video screen
+    const containerClass = isVideoScreen ? "" : "lg:hidden";
+
     return (
         // Only show the modal sidebar on smaller screens, hidden on large+ (lg) screens
-        <div className="lg:hidden">
+        <div className={containerClass}>
             {sideNavbar && (
                 <div className="fixed inset-0 z-50 flex">
                     {/* Dark overlay */}
@@ -66,10 +72,10 @@ function ModalSidebar({ sideNavbar, setSideNavbar }) {
                         {/* Top bar inside the sidebar */}
                         <div className="flex items-center space-x-3 px-4 py-3 ">
                             <AiOutlineMenu className="text-xl cursor-pointer" onClick={closeModal} />
-
                             <div className="flex items-center space-x-1">
-                                <Link to={"/"}>  <img src={logo} alt="YouTube Logo" className="w-28 cursor-pointer" /></Link>
-
+                                <Link to={"/"}>
+                                    <img src={logo} alt="YouTube Logo" className="w-28 cursor-pointer" />
+                                </Link>
                             </div>
                         </div>
 
@@ -77,15 +83,25 @@ function ModalSidebar({ sideNavbar, setSideNavbar }) {
                         <div className="p-4">
                             {/* Section 1 */}
                             <div className="space-y-3">
-                                {sidebarItems.map((item) => (
-                                    <div
-                                        key={item.id}
-                                        className="flex items-center space-x-6 hover:bg-gray-200 duration-300 rounded-xl p-1"
-                                    >
-                                        <div className="text-xl">{item.icon}</div>
-                                        <span>{item.name}</span>
-                                    </div>
-                                ))}
+                                {sidebarItems.map((item) => {
+                                    // Wrap the Home item with Link to navigate to "/"
+                                    if (item.name === "Home") {
+                                        return (
+                                            <Link to="/" key={item.id}>
+                                                <div className="flex items-center space-x-6 hover:bg-gray-200 duration-300 rounded-xl p-1">
+                                                    <div className="text-xl">{item.icon}</div>
+                                                    <span>{item.name}</span>
+                                                </div>
+                                            </Link>
+                                        );
+                                    }
+                                    return (
+                                        <div key={item.id} className="flex items-center space-x-6 hover:bg-gray-200 duration-300 rounded-xl p-1">
+                                            <div className="text-xl">{item.icon}</div>
+                                            <span>{item.name}</span>
+                                        </div>
+                                    );
+                                })}
                             </div>
 
                             <br />
