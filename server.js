@@ -1,9 +1,9 @@
 import express from "express";
-import db from "./Connection/connection.js";
 import AuthRoutes from "./Routes/user.routes.js";
 import VideoRoutes from "./Routes/video.routes.js"
 import CommetRoutes from "./Routes/comment.routes.js"
 import cookieParser from "cookie-parser";
+import mongoose from "mongoose";
 import cors from "cors";
 const app = express();
 app.use(cors({
@@ -21,10 +21,20 @@ app.use("/auth", AuthRoutes);
 app.use("/api", VideoRoutes);
 app.use("/commentApi", CommetRoutes);
 // listen to the port 
-app.listen(PORT, () => {
-    console.log(`Server is running on ${PORT}`)
-})
 
+const DB = "mongodb+srv://user007:test1234@cluster0.jn2ie.mongodb.net/newYoutube-clone?retryWrites=true&w=majority"
+
+mongoose.connect(DB).then(() => {
+    console.log("Connection Successful");
+}).catch((e) => {
+    console.log(e);
+});
+
+
+
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`connected at port ${PORT} `);
+});
 
 
 //     "start": "nodemon server.js",
