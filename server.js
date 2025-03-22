@@ -6,10 +6,20 @@ import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 const app = express();
+// app.use(cors({
+//     origin: 'http://localhost:5173', //react app url
+//     credentials: true
+// }))
 app.use(cors({
-    origin: 'http://localhost:5173', //react app url
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        // Allow all origins
+        callback(null, true);
+    },
     credentials: true
-}))
+}));
+
 // use for parse body req
 app.use(express.json());
 // use for  parse and extract cookie data from HTTP requests
