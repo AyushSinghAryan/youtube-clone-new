@@ -4,8 +4,10 @@ import jwt from "jsonwebtoken";
 
 const cookieOptions = {
     httpOnly: true,
-    secure: false, // Set to true in production
-    sameSite: 'Lax'
+    secure: true, // Set to true in production
+    sameSite: "none",                              // allow cross-site
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+
 
 };
 

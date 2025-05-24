@@ -11,14 +11,15 @@ const app = express();
 //     credentials: true
 // }))
 app.use(cors({
-    origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
-        // Allow all origins
-        callback(null, true);
-    },
-    credentials: true
+    origin: [
+        "https://yotubeclone22323.netlify.app",           // https://yotubeclone22323.netlify.app
+        "http://localhost:5173",          // your local React dev
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
 }));
+
 
 // use for parse body req
 app.use(express.json());
