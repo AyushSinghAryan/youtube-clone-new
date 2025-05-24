@@ -20,6 +20,7 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
+app.options('*', cors());
 
 // use for parse body req
 app.use(express.json());
