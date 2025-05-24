@@ -40,7 +40,7 @@ function Video({ sideNavbar, setSideNavbar }) {
     // Fetch the current video data by its ID
     const fetchVideoById = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/api/getVideoById/${id}`);
+            const response = await axios.get(`https://youtube-clone-new-bl7z.onrender.com/api/getVideoById/${id}`);
             setData(response.data.video);
             setVideoURL(response.data.video.videoLink);
         } catch (err) {
@@ -51,7 +51,7 @@ function Video({ sideNavbar, setSideNavbar }) {
     // Fetch comments associated with the current video and sort them by creation date (newest first)
     const getCommentByVideoId = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/commentApi/comment/${id}`);
+            const response = await axios.get(`https://youtube-clone-new-bl7z.onrender.com/commentApi/comment/${id}`);
             const sortedComments = response.data.comments.sort(
                 (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
             );
@@ -64,7 +64,7 @@ function Video({ sideNavbar, setSideNavbar }) {
     // Fetch all videos for suggestions and filter out the current video
     const fetchSuggestions = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/api/allVideo/');
+            const response = await axios.get('https://youtube-clone-new-bl7z.onrender.com/api/allVideo/');
             // Exclude the current video from suggestions
             const availableVideos = response.data.videos.filter(video => video._id !== id);
             setSuggestions(availableVideos);
@@ -98,7 +98,7 @@ function Video({ sideNavbar, setSideNavbar }) {
         };
         try {
             const response = await axios.post(
-                "http://localhost:3000/commentApi/comment/",
+                "https://youtube-clone-new-bl7z.onrender.com/commentApi/comment/",
                 body,
                 { withCredentials: true }
             );
@@ -153,7 +153,7 @@ function Video({ sideNavbar, setSideNavbar }) {
     const handleSaveComment = async (commentId) => {
         try {
             await axios.put(
-                `http://localhost:3000/commentApi/comment/${commentId}`,
+                `https://youtube-clone-new-bl7z.onrender.com/commentApi/comment/${commentId}`,
                 { message: editingCommentMessage },
                 { withCredentials: true }
             );
@@ -183,7 +183,7 @@ function Video({ sideNavbar, setSideNavbar }) {
     const handleDeleteComment = async (commentId) => {
         try {
             await axios.delete(
-                `http://localhost:3000/commentApi/comment/${commentId}`,
+                `https://youtube-clone-new-bl7z.onrender.com/commentApi/comment/${commentId}`,
                 { withCredentials: true }
             );
             setComments((prevComments) => prevComments.filter((c) => c._id !== commentId));

@@ -60,6 +60,7 @@ export const signIn = async (req, res) => {
 
         // Find the user where either the userName or email matches the identifier
         const user = await userModel.findOne({
+            // or is logical operator here 
             $or: [
                 { userName: identifier },
                 { email: identifier }

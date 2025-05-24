@@ -21,7 +21,7 @@ const UpdateVideo = () => {
     useEffect(() => {
         const fetchVideoDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/getVideoById/${id}`);
+                const response = await axios.get(`https://youtube-clone-new-bl7z.onrender.com/api/getVideoById/${id}`);
                 const video = response.data.video;
                 setInputField({
                     title: video.title,
@@ -68,7 +68,7 @@ const UpdateVideo = () => {
         }
         setLoader(true);
         try {
-            await axios.put(`http://localhost:3000/api/video/${id}`, inputField, { withCredentials: true });
+            await axios.put(`https://youtube-clone-new-bl7z.onrender.com/api/video/${id}`, inputField, { withCredentials: true });
             setLoader(false);
             toast.success("Video updated successfully", {
                 position: "top-right",

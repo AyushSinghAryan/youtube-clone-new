@@ -73,7 +73,7 @@ function Navbar({ setSideNavBarFun, sideNavbar }) {
 
     const getLogoutFun = async () => {
         axios
-            .post("http://localhost:3000/auth/logout", {}, { withCredentials: true })
+            .post("https://youtube-clone-new-bl7z.onrender.com/auth/logout", {}, { withCredentials: true })
             .then(() => {
                 console.log("Logout successful");
             })

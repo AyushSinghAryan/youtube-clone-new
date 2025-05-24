@@ -26,7 +26,7 @@ const Login = ({ setLoginModel }) => {
     const handleLogin = async () => {
         setLoader(true);
 
-        axios.post("http://localhost:3000/auth/login", loginField, { withCredentials: true }).then((res) => {
+        axios.post("https://youtube-clone-new-bl7z.onrender.com/auth/login", loginField, { withCredentials: true }).then((res) => {
             setLoader(false)
             // storing token into local storage
             localStorage.setItem("token", res.data.token);

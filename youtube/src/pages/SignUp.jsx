@@ -104,7 +104,7 @@ const SignUp = () => {
         if (!validateFields()) return;
 
         setProgressBar(true);
-        axios.post("http://localhost:3000/auth/signUp", signUpField)
+        axios.post("https://youtube-clone-new-bl7z.onrender.com/auth/signUp", signUpField)
             .then((res) => {
                 console.log(res);
                 // Show success message and navigate to login page

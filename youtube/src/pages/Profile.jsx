@@ -16,7 +16,7 @@ const Profile = ({ sideNavbar, setSideNavbar }) => {
     // getting user profile from the videos 
     const fetchProfileData = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/api/${id}/channel`);
+            const response = await axios.get(`https://youtube-clone-new-bl7z.onrender.com/api/${id}/channel`);
             setData(response.data.video);
             setUser(response.data.video[0]?.user);
         } catch (error) {
@@ -40,7 +40,7 @@ const Profile = ({ sideNavbar, setSideNavbar }) => {
         const confirmDelete = window.confirm("Are you sure you want to delete this video?");
         if (!confirmDelete) return;
         try {
-            await axios.delete(`http://localhost:3000/api/video/${videoId}`, { withCredentials: true });
+            await axios.delete(`https://youtube-clone-new-bl7z.onrender.com/api/video/${videoId}`, { withCredentials: true });
             // Remove the deleted video from state
             setData(prevData => prevData.filter(video => video._id !== videoId));
         } catch (error) {

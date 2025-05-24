@@ -11,6 +11,7 @@ const auth = async (req, res, next) => {
         try {
             // this will verify the token
             const decode = jwt.verify(token, "Its_My_Secret_Key");
+            // decode is a payload
             // uisng select will not give password , so in req.user we do not give password
             req.user = await userModel.findById(decode.userId).select('-password');
             next();

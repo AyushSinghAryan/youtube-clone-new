@@ -83,7 +83,7 @@ const VideoUpload = () => {
         }
         setLoader(true);
         try {
-            await axios.post("http://localhost:3000/api/video", inputField, { withCredentials: true });
+            await axios.post("https://youtube-clone-new-bl7z.onrender.com/api/video", inputField, { withCredentials: true });
             setLoader(false);
             toast.success("Video uploaded successfully", {
                 position: "top-right",

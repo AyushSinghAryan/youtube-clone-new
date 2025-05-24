@@ -29,6 +29,7 @@ export const uploadVideo = async (req, res) => {
 
 export const getAllVideo = async (req, res) => {
     try {
+        // in ,model we are using ref for user that why we are able  populate user property 
         const videos = await videoModel.find().populate('user', "channelName userName email profilePic channelBanner about createdAt");
         // in populate first agrument is table/collection name , number of fields want
         res.status(201).json({ sucess: "true", "videos": videos });

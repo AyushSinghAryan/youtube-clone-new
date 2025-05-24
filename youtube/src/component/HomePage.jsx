@@ -26,7 +26,7 @@ function HomePage({ sideNavbar }) {
     const query = searchParams.get("q") || "";
     // getting all video and display on the screen 
     useEffect(() => {
-        axios.get('http://localhost:3000/api/allVideo/')
+        axios.get('https://youtube-clone-new-bl7z.onrender.com/api/allVideo/')
             .then(res => {
                 setData(res.data.videos);
             })
