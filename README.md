@@ -39,7 +39,7 @@ youtube-clone-new/
 │   │   ├── App.js
 │   │   └── index.js
 │   └── package.json
-├── backend/  # (Optional - not deployed on Netlify)
+├── backend/  
 
 ````
 
