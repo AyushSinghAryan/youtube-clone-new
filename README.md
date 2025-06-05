@@ -3,13 +3,13 @@
 
 🔗 **Live Site**: [https://yotubeclone22323.netlify.app/](https://yotubeclone22323.netlify.app/)
 
-A sleek and responsive YouTube clone built using modern web technologies. This project replicates key features of the YouTube UI including video listing, search functionality, and video playback using real data from the YouTube API.
+A sleek and responsive YouTube clone built using modern web technologies. This project replicates key features of the YouTube UI including video listing, search functionality, and video playback using real data from the YouTube backend.
 
 ---
 
 ## 🚀 Features
 
-- 🔍 Search for videos using the YouTube Data API
+- 🔍 Search for videos using the YouTube Data API, using mongoDB , node js
 - 📺 Play videos directly within the app
 - 🎨 Clean and responsive UI using Tailwind CSS
 - ⚡ Fast and optimized performance
@@ -21,7 +21,7 @@ A sleek and responsive YouTube clone built using modern web technologies. This p
 
 - **Frontend:** React.js, Tailwind CSS, Axios
 - **Routing:** React Router DOM
-- **API:** YouTube Data API v3
+- **Backend:** YouTube Data API using MongoDB , Node js
 
 ---
 
