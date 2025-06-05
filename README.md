@@ -9,10 +9,10 @@ A sleek and responsive YouTube clone built using modern web technologies. This p
 
 ## 🚀 Features
 
-- 🔍 Search for videos using the YouTube Data API, using mongoDB , node js
+- 🔍 Search for videos using the YouTube Data API, using mongoDB , node js ,JWT authentication
 - 📺 Play videos directly within the app
 - 🎨 Clean and responsive UI using Tailwind CSS
-- ⚡ Fast and optimized performance
+- ⚡ Fast and optimized performance ,
 - 🌐 Client-side routing with React Router
 
 ---
@@ -21,7 +21,7 @@ A sleek and responsive YouTube clone built using modern web technologies. This p
 
 - **Frontend:** React.js, Tailwind CSS, Axios
 - **Routing:** React Router DOM
-- **Backend:** YouTube Data API using MongoDB , Node js
+- **Backend:** YouTube Data API using MongoDB , Node js,JWT authentication
 
 ---
 
