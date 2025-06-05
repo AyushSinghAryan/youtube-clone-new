@@ -89,7 +89,6 @@ This creates an optimized production build in the `build/` folder, which is depl
 
 ## 🧠 Future Improvements
 
-* Add user authentication
 * Save video history and favorites
 * Dark mode support
 * Pagination and infinite scroll
